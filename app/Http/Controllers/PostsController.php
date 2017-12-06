@@ -21,21 +21,17 @@ class PostsController extends Controller
 
     public function create(){
       return view('posts.create');
-    }    
+    }
 
     public function store(){
       $this->validate(request(), [
         'title' => 'required',
         'body' => 'required'
       ]);
-      // Create a new post using the request data
-      // Save it to the db
-      Post::create([
-        'title' => request('title'),
-        'body' => request('body'),
-        'user_id' => auth()->id()
-      ]);
-      
+
+      auth()->user()->publish(
+        new Post(request(['title', 'body']))
+      );
 
       // Redirect to the homepage.
       return redirect('/');
