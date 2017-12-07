@@ -6,20 +6,16 @@ use App\User;
 
 use App\Mail\Welcome;
 
+use App\Http\Requests\RegistrationRequest;
+
 class RegistrationController extends Controller
 {
     public function create(){
       return view('registration.create');
     }    
 
-    public function store(){
-      // Validate the form
-      $this->validate(request(), [
-        'name' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|confirmed'
+    public function store(RegistrationRequest $request){
 
-      ]);
 
       $user = User::create(request(['name', 'email', 'password']));
 
