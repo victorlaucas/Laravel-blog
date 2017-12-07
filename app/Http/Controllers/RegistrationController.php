@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 
+use App\Mail\Welcome;
+
 class RegistrationController extends Controller
 {
     public function create(){
@@ -19,13 +21,12 @@ class RegistrationController extends Controller
 
       ]);
 
-      // Create and save the user. 
       $user = User::create(request(['name', 'email', 'password']));
 
-      // Sign them in
       auth()->login($user);
 
-      // Redirct to the home page. 
+      \Mail::to($user)->send(new Welcome($user));
+
       return redirect()->home();
     }
 }
